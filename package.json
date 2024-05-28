@@ -16,8 +16,5 @@
   "bugs": {
     "url": "https://github.com/pereletskii/course_work/issues"
   },
-  "homepage": "https://github.com/pereletskii/course_work#readme",
-  "dependencies": {
-    "decimal.js": "^10.4.3"
-  }
+  "homepage": "https://github.com/pereletskii/course_work#readme"
 }
