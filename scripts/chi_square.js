@@ -21,7 +21,7 @@ function gammaFunction(z) {
     return Math.sqrt(2 * PI) * Math.pow(t, z + 0.5) * Math.exp(-t) * x;
 }
 
-function incompleteGamma(s, x, epsilon = 0.001) {
+function incompleteGamma(s, x, epsilon = 0.01) {
     function integrand(t) {
         return Math.pow(t, s - 1) * Math.exp(-t);
     }
