@@ -1,10 +1,15 @@
 function randWeightenedNetwork(rng) {
     let randR = Math.random();
 
-    let matrix = new Array(7).fill(0).map(() => new Array(7).fill(0));
+    let matrix = new Array(7).fill(Infinity).map(() => new Array(7).fill(Infinity));
 
     for (let i = 1; i <= 7; i++) {
-        for (let j = 1; j <= 7; j++) {
+        for (let j = i; j <= 7; j++) {
+            if (i == j) {
+                matrix[i - 1][j - 1] = 0;
+                continue;
+            }
+            
             let key;
             if (`${i}, ${j}` in rng) {
                 key = `${i}, ${j}`;

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { normalDistribution,  uniformDistribution, normalRng, uniformRng } = require('./scripts/distributions');
 const { randWeightenedNetwork } = require('./scripts/matrices');
+const { floydWarshall } = require('./scripts/graph');
 
 let data = JSON.parse(fs.readFileSync('data.json', 'utf8'));
 
@@ -38,9 +39,40 @@ function main() {
     // console.log(rngType);
 
     let matrix = randWeightenedNetwork(rngType);
-    console.table(matrix);
+    // console.table(matrix);
+
+    let graph = floydWarshall(matrix);
+    // console.table(graph);
+
+    let radiuses = {};
+
+    for (let i = 0; i < graph.length; i++) {
+        radiuses[`${i + 1}`] = { outerRadius: 0, innerRadius: 0, innerOuterRadius: 0 };
+        radiuses[`${i + 1}`].outerRadius = Math.max.apply(Math, graph[i]);
+        let col = [];
+        for (let j = 0; j < graph.length; j++) {
+            col.push(graph[j][i]);
+        }
+        radiuses[`${i + 1}`].innerRadius = Math.max.apply(Math, col);
+        radiuses[`${i + 1}`].innerOuterRadius = radiuses[`${i + 1}`].innerRadius + radiuses[`${i + 1}`].outerRadius;
+    }
+
+    // console.table(radiuses);
+
+    let modelResult = {};
+    for ([key, value] of Object.entries(radiuses)) {
+        if (modelResult.value){
+            if (value.innerOuterRadius < modelResult.value) {
+                modelResult.value = value.innerOuterRadius;
+                modelResult.vertice = key;
+            }
+        } else {
+            modelResult.value = value.innerOuterRadius;
+            modelResult.vertice = key;
+        }
+    }
+
+    console.log(modelResult);
 }
 
 module.exports.main = main;
-
-main();
