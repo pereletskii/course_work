@@ -13,7 +13,7 @@ for (const [key, value] of Object.entries(data)) {
     data[key] = dataString;
 }
 
-function main() {
+function findRng(){
     let rng = { normal: [], uniform: [] };
     let rngType = {};
 
@@ -21,7 +21,6 @@ function main() {
         rng.normal.push(normalDistribution(data[key], key));
         rng.uniform.push(uniformDistribution(data[key], key));
     }
-    // console.log(rng);
 
     for (let i = 0; i < rng.normal.length; i++) {
         if (rng.normal[i].chi_2_pr > rng.uniform[i].chi_2_pr) {
@@ -36,22 +35,27 @@ function main() {
             }
         }
     }
-    // console.log(rngType);
 
-    let matrix = randWeightenedNetwork(rngType);
-    // console.table(matrix);
+    return { rng, rngType };
+}
 
-    let graph = floydWarshall(matrix);
-    // console.table(graph);
+function main(rng) {
+    // console.log(rng);
+
+    let rngMatrix = randWeightenedNetwork(rng);
+    // console.table(rngMatrix);
+
+    let distancesMatrix = floydWarshall(rngMatrix);
+    // console.table(distancesMatrix);
 
     let radiuses = {};
 
-    for (let i = 0; i < graph.length; i++) {
+    for (let i = 0; i < distancesMatrix.length; i++) {
         radiuses[`${i + 1}`] = { outerRadius: 0, innerRadius: 0, innerOuterRadius: 0 };
-        radiuses[`${i + 1}`].outerRadius = Math.max.apply(Math, graph[i]);
+        radiuses[`${i + 1}`].outerRadius = Math.max.apply(Math, distancesMatrix[i]);
         let col = [];
-        for (let j = 0; j < graph.length; j++) {
-            col.push(graph[j][i]);
+        for (let j = 0; j < distancesMatrix.length; j++) {
+            col.push(distancesMatrix[j][i]);
         }
         radiuses[`${i + 1}`].innerRadius = Math.max.apply(Math, col);
         radiuses[`${i + 1}`].innerOuterRadius = radiuses[`${i + 1}`].innerRadius + radiuses[`${i + 1}`].outerRadius;
@@ -72,7 +76,14 @@ function main() {
         }
     }
 
-    console.log(modelResult);
+    // console.log(modelResult);
+
+    return modelResult
 }
 
 module.exports.main = main;
+module.exports.findRng = findRng;
+
+// let {rng, rngType} = findRng(data);
+// console.log(rngType);
+// main(rng);
