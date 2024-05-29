@@ -1,7 +1,7 @@
 const fs = require('fs');
-const { normalDistribution,  uniformDistribution, normalRng, uniformRng } = require('./scripts/distributions');
-const { randWeightenedNetwork } = require('./scripts/matrices');
-const { floydWarshall } = require('./scripts/graph');
+const { normalDistribution,  uniformDistribution, normalRng, uniformRng } = require('./distributions');
+const { randWeightenedNetwork } = require('./matrices');
+const { floydWarshall } = require('./graph');
 
 let data = JSON.parse(fs.readFileSync('data.json', 'utf8'));
 
@@ -40,13 +40,10 @@ function main(rng) {
             }
         }
     }
-    // console.log(rngType);
 
     let rngMatrix = randWeightenedNetwork(rngType);
-    // console.table(rngMatrix);
 
     let distancesMatrix = floydWarshall(rngMatrix);
-    // console.table(distancesMatrix);
 
     let radiuses = {};
 
@@ -61,8 +58,6 @@ function main(rng) {
         radiuses[`${i + 1}`].innerOuterRadius = radiuses[`${i + 1}`].innerRadius + radiuses[`${i + 1}`].outerRadius;
     }
 
-    // console.table(radiuses);
-
     let modelResult = {};
     for ([key, value] of Object.entries(radiuses)) {
         if (modelResult.value){
@@ -76,13 +71,16 @@ function main(rng) {
         }
     }
 
-    // console.log(modelResult);
-
-    return modelResult
+    return { rngType, rngMatrix, distancesMatrix, radiuses, modelResult }
 }
 
 module.exports.main = main;
 module.exports.findRng = findRng;
 
-// let rng = findRng(data);
-// console.log(main(rng));
+/* let rng = findRng(data);
+console.table(rng.normal);
+console.table(rng.uniform);
+
+for ([key, values] of Object.entries(main(rng))) {
+    console.table(values);
+} */
