@@ -15,12 +15,17 @@ for (const [key, value] of Object.entries(data)) {
 
 function findRng(){
     let rng = { normal: [], uniform: [] };
-    let rngType = {};
-
+    
     for ([key, value] of Object.entries(data)) {
         rng.normal.push(normalDistribution(data[key], key));
         rng.uniform.push(uniformDistribution(data[key], key));
     }
+
+    return rng;
+}
+
+function main(rng) {
+    let rngType = {};
 
     for (let i = 0; i < rng.normal.length; i++) {
         if (rng.normal[i].chi_2_pr > rng.uniform[i].chi_2_pr) {
@@ -35,14 +40,9 @@ function findRng(){
             }
         }
     }
+    // console.log(rngType);
 
-    return { rng, rngType };
-}
-
-function main(rng) {
-    // console.log(rng);
-
-    let rngMatrix = randWeightenedNetwork(rng);
+    let rngMatrix = randWeightenedNetwork(rngType);
     // console.table(rngMatrix);
 
     let distancesMatrix = floydWarshall(rngMatrix);
@@ -84,6 +84,5 @@ function main(rng) {
 module.exports.main = main;
 module.exports.findRng = findRng;
 
-// let {rng, rngType} = findRng(data);
-// console.log(rngType);
-// main(rng);
+// let rng = findRng(data);
+// console.log(main(rng));
