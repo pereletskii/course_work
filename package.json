@@ -4,7 +4,7 @@
   "description": "Algorithms of discrete mathematics course work",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node app.js",
     "test": "node test.js"
   },
   "repository": {
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/pereletskii/course_work/issues"
   },
-  "homepage": "https://github.com/pereletskii/course_work#readme"
+  "homepage": "https://github.com/pereletskii/course_work#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
