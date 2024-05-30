@@ -36,3 +36,21 @@ div {
     margin-right: 20%;
     margin-top: 50px
 }
+.wrapper {
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+#map {
+    margin-top: 0;
+    grid-column-start: 1;
+    grid-column-end: 1;
+}
+#graph {
+    margin-top: 0;
+    grid-column-start: 2;
+    grid-column-end: 2;
+}
