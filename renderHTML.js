@@ -1,4 +1,5 @@
 const Table = require('table-builder');
+const fs = require('fs');
 
 const { findRng } = require('./scripts/index.js');
 const { formatTables } = require('./scripts/tablesHandler.js');
@@ -69,7 +70,33 @@ function dynamicTablesFormer() {
     return out + result
 }
 
+function inputDataFormer() {
+    let rawData = JSON.parse(fs.readFileSync('data.json', 'utf8'));
+
+    let data = []
+    let headers = {'path': 'Путь'}
+    let times = ['9:00', '12:00', '15:00', '18:00', '21:00'];
+    for (let i = 0; i < times.length * 5; i++) {
+        headers[`_${i}`] = times[i % 5];
+    }
+
+    for ([edge, matrix] of Object.entries(rawData)) {
+        let dataString = {};
+        for (let i = 0; i < matrix.length; i++) {
+            for (let j = 0; j < matrix[i].length; j++) {
+                dataString[`_${j * 5 + i}`] = matrix[i][j];
+            }
+        }
+        dataString['path'] = edge;
+
+        data.push(dataString);
+    }
+
+    return '<h2>Исходные данные</h2>' + createTable(headers, data)
+}
+
 module.exports = {
     staticTablesFormer,
-    dynamicTablesFormer
+    dynamicTablesFormer,
+    inputDataFormer
 }
