@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/pereletskii/course_work#readme",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "table-builder": "^2.1.1"
   }
 }
