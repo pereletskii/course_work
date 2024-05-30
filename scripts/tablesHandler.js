@@ -1,34 +1,44 @@
-const { main } = require('./index.js');
+const { main, findRng } = require('./index.js');
 
 function JSONify(table){
-    let JSONrngMatrix = {}
+    let JSONrngMatrix = []
     for (let i = 0; i < table.length; i++) {
-        table[i] = [i + 1].concat(table[i]);
-        JSONrngMatrix[i + 1] = table[i];
+        let string = {};
+        string[0] = i + 1;
+        for (let j = 0; j < table[i].length; j++) {
+            string[j + 1] = table[i][j];
+        }
+        JSONrngMatrix.push(string);
     }
     return JSONrngMatrix
 }
 
 function formatTables(rng) {
+    // All data
     let data = main(rng);
-    // console.log(data);
 
-    // console.log(data.rngType);
-    data['normalTables'] = {};
-    data['uniformTables'] = {};
+    // rngType
+    data['normalTable'] = [];
+    data['uniformTable'] = [];
     for ([key, value] of Object.entries(data.rngType)) {
         if (value.type == 'normal') {
-            data.normalTables[key] = value.params;
+            data.normalTable.push({
+                path: key,
+                mu: value.params.mu,
+                sigma: value.params.sigma,
+                z: value.params.z
+            })
         } else {
-            data.uniformTables[key] = value.params;
+            data.uniformTable.push({
+                path: key,
+                a: value.params.a,
+                b: value.params.b
+            })
         }
     }
     delete data['rngType'];
-    // console.log(data.normalTables);
-    // console.log(data.uniformTables);
-    // OK
 
-    // console.log(data.rngMatrix);
+    // rngMatrix
     for (let i = 0; i < data.rngMatrix.length; i++) {
         for (let j = 0; j < data.rngMatrix.length; j++) {
             if (data.rngMatrix[i][j] == Infinity){
@@ -37,24 +47,28 @@ function formatTables(rng) {
             data.rngMatrix[j][i] = data.rngMatrix[i][j]
         }   
     }
-    // console.table(data.rngMatrix);
-
     data.rngMatrix = JSONify(data.rngMatrix);
-    // console.table(data.rngMatrix);
-    // OK
 
-    // console.table(data.distancesMatrix);
+    // distancesMatrix
     data.distancesMatrix = JSONify(data.distancesMatrix);
-    // console.table(data.distancesMatrix);
-    // OK
 
-    // console.table(data.radiuses);
-    // OK
+    // radiuses
+    let radiuses = [];
+    for ([key, table] of Object.entries(data.radiuses)) {
+        let string = {};
+        string['vertice'] = key;
+        for ([strName, value] of Object.entries(table)) {
+            string[strName] = value;
+        }
+        radiuses.push(string);
+    }
+    data.radiuses = radiuses;
 
-    // console.table(data.modelResult);
-    // OK
+    // modelResult without changes
 
     return data
 }
 
 module.exports.formatTables = formatTables;
+
+// console.log(formatTables(findRng()))
