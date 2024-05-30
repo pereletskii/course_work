@@ -4,13 +4,16 @@
 	border: 1px solid #dddddd;
 	border-collapse: collapse; 
 }
-.table th {
+.smallTable {
+    border-collapse: collapse; 
+}
+table th {
 	font-weight: bold;
 	padding: 5px;
 	background: #efefef;
 	border: 1px solid #dddddd;
 }
-.table td {
+table td {
 	border: 1px solid #dddddd;
 	padding: 5px;
 }
@@ -27,4 +30,9 @@ button {
 }
 button:hover {
     background-color: blue;
+}
+div {
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 50px
 }
