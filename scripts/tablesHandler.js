@@ -66,7 +66,14 @@ function formatTables(rng) {
 
     // modelResult without changes
 
-    return data
+    return {
+        normalTable: data.normalTable,
+        uniformTable: data.uniformTable,
+        rngMatrix: data.rngMatrix,
+        distancesMatrix: data.distancesMatrix,
+        radiuses: data.radiuses,
+        modelResult: data.modelResult
+    }
 }
 
 module.exports.formatTables = formatTables;
