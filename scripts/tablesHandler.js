@@ -1,4 +1,4 @@
-const { main, findRng } = require('./index.js');
+const { main } = require('./index.js');
 
 function JSONify(table){
     let JSONrngMatrix = {}
@@ -58,6 +58,3 @@ function formatTables(rng) {
 }
 
 module.exports.formatTables = formatTables;
-
-let data = formatTables(findRng());
-console.log(data);
