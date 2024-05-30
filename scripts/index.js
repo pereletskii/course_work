@@ -24,7 +24,7 @@ function findRng(){
     return rng;
 }
 
-function main(rng) {
+function dynamicTables(rng) {
     let rngType = {};
 
     for (let i = 0; i < rng.normal.length; i++) {
@@ -74,13 +74,5 @@ function main(rng) {
     return { rngType, rngMatrix, distancesMatrix, radiuses, modelResult }
 }
 
-module.exports.main = main;
+module.exports.main = dynamicTables;
 module.exports.findRng = findRng;
-
-/* let rng = findRng(data);
-console.table(rng.normal);
-console.table(rng.uniform);
-
-for ([key, values] of Object.entries(main(rng))) {
-    console.table(values);
-} */
